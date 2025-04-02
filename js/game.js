@@ -292,8 +292,18 @@ function init() {
 
 // Initialize multiplayer connection
 function initMultiplayer() {
+    // Select WebSocket URL based on current hostname
+    let wsUrl;
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        // Local development - use ws:// protocol
+        wsUrl = 'ws://localhost:8080';
+    } else {
+        // Production - use wss:// protocol with Render domain
+        wsUrl = 'wss://vibecars.onrender.com';
+    }
+    
     // Connect to WebSocket server
-    socket = new WebSocket('wss://vibecars.onrender.com');
+    socket = new WebSocket(wsUrl);
     
     // Handle connection open
     socket.onopen = function() {
