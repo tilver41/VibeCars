@@ -293,7 +293,7 @@ function init() {
 // Initialize multiplayer connection
 function initMultiplayer() {
     // Connect to WebSocket server
-    socket = new WebSocket('ws://localhost:8080');
+    socket = new WebSocket('wss://vibecars.onrender.com');
     
     // Handle connection open
     socket.onopen = function() {
