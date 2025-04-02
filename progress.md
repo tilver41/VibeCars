@@ -42,11 +42,23 @@
 - Created a simple Node.js server for local development
 - Initialized git repository and committed changes
 
+### Physics Improvements (April 2, 2025)
+- Implemented actual physical holes in the arena floor that cars can fall through
+- Redesigned ground construction using a grid of panels instead of a single plane
+- Added detection triggers at the bottom of holes to reset car position
+- Enhanced car movement by applying directional forces based on car orientation
+- Added a reset sound effect when car falls through a hole
+- Expanded map size by 10x (from 50x50 to 500x500) with additional holes
+- Adjusted car physics parameters for better control in the larger arena
+- Implemented random respawn locations after falling through holes
+- Enhanced camera system to better handle the larger arena
+
 ## Known Issues and Limitations
 
 - Physics sometimes behaves unexpectedly on certain browsers
 - PowerShell execution policy can block the Node.js server execution
 - Car can occasionally get stuck on walls or in corners
+- Triggering holes on uneven terrain may sometimes cause unexpected resets
 
 ## Future Development Plans
 

@@ -46,15 +46,19 @@ This is the core of the application, containing all game logic, rendering, and p
 - Configures contact materials for different object interactions
 
 ##### Arena Creation
-- Builds a box-shaped arena with walls
-- Creates holes in the floor for gameplay challenges
-- Implements collision detection for arena boundaries
+- Builds a large-scale arena (500x500 units) with walls
+- Creates a modular ground system using a grid of physical panels
+- Implements physical holes by selectively not creating ground panels where holes should be
+- Uses trigger bodies positioned below holes to detect when objects fall through
+- Provides visual representation of holes separate from their physics implementation
 
 ##### Car Implementation
 - Constructs a 3D model of the car with chassis and wheels
 - Creates physics body for the car with proper mass and constraints
-- Implements car controls (WASD/arrow keys for movement)
+- Implements direction-based car controls that factor in the car's current orientation
+- Applies forces in the car's local coordinate system rather than world coordinates
 - Adds special actions: jump/flip (E key), horn (Q key), and shooting (Space)
+- Includes a downforce component to improve ground traction
 
 ##### Projectile System
 - Implements projectile creation and physics
@@ -94,6 +98,7 @@ The camera follows the car with a third-person perspective:
 - Uses the car's orientation to position itself behind the car
 - Implements smooth transitions using linear interpolation
 - Adjusts height and distance based on gameplay needs
+- Configured with increased distance and height for the larger arena scale
 
 ### Sound Generation
 Instead of relying on external audio files, the game uses Web Audio API to generate sounds procedurally:
@@ -104,12 +109,25 @@ Instead of relying on external audio files, the game uses Web Audio API to gener
 ### Collision System
 The game uses different strategies for collision detection:
 - Solid walls use regular physics collision
-- Holes in the floor use special trigger volumes with callbacks
-- Car flipping detection uses orientation calculation
+- Floor system implemented using a grid of physical panels rather than a single plane
+- Holes created by selectively omitting ground panels in specific areas
+- Fallthrough detection uses thin trigger cylinders positioned well below the holes
+- Car reset mechanism uses random respawn positions throughout the arena
+
+### Terrain Construction System
+The terrain is built using a modular approach:
+- Ground is constructed using a grid of panels instead of a single piece
+- Each panel is checked against hole positions before creation
+- Panels that would intersect with holes are not created, creating actual physical gaps
+- Visual representation of the ground uses a single mesh for efficiency
+- Visual representation of holes are rendered as black circles
+- The separation of visual and physical representation allows for flexible design
 
 ## Performance Considerations
 
 - **Physics Step Size**: Fixed time step for physics to ensure consistent behavior
+- **Ground Panel Size**: Larger ground panels (25x25) used for the expanded arena to maintain performance
+- **Terrain Construction**: Only creates necessary ground panels, avoiding areas where holes exist
 - **Object Pooling**: (Future implementation) Reuse projectiles instead of creating/destroying
 - **Renderer Optimization**: Shadows only enabled for important objects
 - **Memory Management**: Removes old projectiles to prevent memory leaks
