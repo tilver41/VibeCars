@@ -37,4 +37,4 @@ Simply open the `index.html` file in a web browser. No server or build process r
 ## Credits
 
 - Car physics based on Three.js and Cannon.js
-- Sound effects from freesound.org 
+- Sound effects from freesound.org "# VibeCars" 
