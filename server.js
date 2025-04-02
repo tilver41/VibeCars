@@ -2,8 +2,9 @@
 const WebSocket = require('ws');
 
 // Create WebSocket server on port 8080
+const PORT = process.env.PORT || 8080;
 const wss = new WebSocket.Server({ 
-  port: 8080,
+  port: PORT,
   // Add ping interval to keep connections alive
   clientTracking: true
 });
@@ -513,4 +514,12 @@ function reconcilePlayerVisibility(playerId) {
   });
 }
 
-console.log('VibeCars multiplayer server running on ws://localhost:8080'); 
+// Determine the WebSocket URL based on environment
+let serverUrl;
+if (process.env.RENDER || process.env.NODE_ENV === 'production') {
+  serverUrl = 'wss://vibecars.onrender.com';
+} else {
+  serverUrl = `ws://localhost:${PORT}`;
+}
+
+console.log(`VibeCars multiplayer server running on ${serverUrl}`); 
